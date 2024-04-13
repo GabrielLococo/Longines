@@ -6,6 +6,11 @@ socket.on("products", (data) => {
 
 const renderProducts = (products) => {
     const conteinerProducts = document.getElementById("conteinerProducts")
+    if (!conteinerProducts) {
+        console.error("No se encontró el elemento con ID 'conteinerProducts'")
+        return
+    }
+
     conteinerProducts.innerHTML = ""
     
     products.docs.forEach(item => {
@@ -13,8 +18,12 @@ const renderProducts = (products) => {
         card.classList.add("card")
 
         card.innerHTML = ` 
-                        <p> ${item.title} </p>
-                        <p> ${item.price} </p>
+                        <p> titulo: ${item.title} </p>
+                        <p> descripción: ${item.description} </p>
+                        <p> stock: ${item.stock} </p>
+                        <p> precio: $${item.price} </p>
+                        <p> categoria: ${item.category} </p>
+                        
                         <button> Eliminar </button>
                         `
 

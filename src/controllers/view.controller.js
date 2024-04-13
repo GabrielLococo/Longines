@@ -1,6 +1,9 @@
 const ProductModel = require("../models/product.model.js")
 const CartRepository = require("../repositories/cart.repository.js")
 const cartRepository = new CartRepository()
+const ProductRepository = require("../repositories/product.repository.js")
+const productRepository = new ProductRepository()
+
 
 class ViewsController {
     async renderProducts(req, res) {

@@ -11,7 +11,7 @@ class ProductRepository {
             const existProduct = await ProductModel.findOne({ code: code })
 
             if (existProduct) {
-                console.log("El código debe ser único")
+                console.log("El código debe ser único, papa")
                 return
             }
 
