@@ -15,7 +15,7 @@ class CartController {
             const newCart = await cartRepository.createCart()
             res.json(newCart);
         } catch (error) {
-            res.status(500).send("Error")
+            res.status(500).send("Error al crear carrito")
         }
     }
 
@@ -36,13 +36,15 @@ class CartController {
         const cartId = req.params.cid
         const productId = req.params.pid
         const quantity = req.body.quantity || 1
+        
         try {
-            await cartRepository.addingProduct(cartId, productId, quantity)
+            await cartRepository.addProductToCart(cartId, productId, quantity)
             const carritoID = (req.user.cart).toString()
 
             res.redirect(`/carts/${carritoID}`)
         } catch (error) {
-            res.status(500).send("Error")
+            console.log('error addproduct' + error)
+            res.status(500).send({ status: "Error", error: error })
         }
     }
 

@@ -11,7 +11,21 @@ class CartRepository {
         }
     }
 
-    async getProductFromCart(idCarrito) {
+    //
+    // async getProductFromCart(idCarrito) {
+    //     try {
+    //         const carrito = await CartModel.findById(idCarrito)
+    //         if (!carrito) {
+    //             console.log("No existe ese carrito con el id")
+    //             return null
+    //         }
+    //         return carrito
+    //     } catch (error) {
+    //         throw new Error("Error")
+    //     }
+    // }
+    //
+    async getCartById(idCarrito) {
         try {
             const carrito = await CartModel.findById(idCarrito)
             if (!carrito) {
@@ -20,13 +34,13 @@ class CartRepository {
             }
             return carrito
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error al obtener el carrito cart.repository")
         }
     }
 
-    async addingProduct(cartId, productId, quantity = 1) {
+    async addProductToCart(cartId, productId, quantity = 1) {
         try {
-            const carrito = await this.addProductToCart(cartId) //********************ACÁ HAY UN ERROR CREO
+            const carrito = await this.getCartById(cartId) //********************ACÁ HAY UN ERROR CREO
             const existeProducto = carrito.products.find(item => item.product._id.toString() === productId)
 
             if (existeProducto) {
