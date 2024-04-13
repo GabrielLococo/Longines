@@ -11,7 +11,7 @@ class ProductRepository {
             const existProduct = await ProductModel.findOne({ code: code })
 
             if (existProduct) {
-                console.log("El código debe ser único, papa")
+                console.log("El código del producto debe ser único.") // tira este error al agregar un producto al REALTIME
                 return
             }
 

@@ -23,7 +23,6 @@ const renderProducts = (products) => {
                         <p> stock: ${item.stock} </p>
                         <p> precio: $${item.price} </p>
                         <p> categoria: ${item.category} </p>
-                        
                         <button> Eliminar </button>
                         `
 

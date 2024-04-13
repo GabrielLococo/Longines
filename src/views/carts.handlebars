@@ -17,6 +17,7 @@
 <button onclick="emptyCart('{{cartId}}')" class="btn btn-danger">Vaciar Carrito</button>
 <button class="btn btn-success"><a  class="link-light" href="/products">volver a la tienda</a></button>
 <h3 class="mt-2">Total de la compra: ${{totalBuy}}</h3>
+<button onclick="endBuy('{{cartId}}')" class="btn btn-warning">Terminar Compra</button>
 
 <script>
     function deletingProduct(cartId, productId) {
@@ -41,6 +42,21 @@
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Error al vaciar el carrito');
+                }
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function endBuy(cartId) {
+        fetch(`/api/carts/${cartId}/purchase`, {
+            method: 'POST'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al finalizar la compra');
                 }
                 location.reload();
             })

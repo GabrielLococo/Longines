@@ -112,7 +112,7 @@ class CartController {
     async endBuy(req, res) {
         const cartId = req.params.cid
         try {
-            const cart = await cartRepository.getProductFromCart(cartId)
+            const cart = await cartRepository.getCartById(cartId)
             const products = cart.products
             const ProductsNotAvailable = [];
 
