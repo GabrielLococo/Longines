@@ -26,7 +26,7 @@ class CartRepository {
 
     async addingProduct(cartId, productId, quantity = 1) {
         try {
-            const carrito = await this.addProductFromCart(cartId)
+            const carrito = await this.addProductToCart(cartId) //********************ACÁ HAY UN ERROR CREO
             const existeProducto = carrito.products.find(item => item.product._id.toString() === productId)
 
             if (existeProducto) {

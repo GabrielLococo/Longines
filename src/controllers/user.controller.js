@@ -58,7 +58,7 @@ class UserController {
             }
 
             const token = jwt.sign({ user: findedUser }, "coderhouse", {
-                expiresIn: "1h"
+                expiresIn: "3h"
             })
 
             res.cookie("lococotokencookie", token, {
