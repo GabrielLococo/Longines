@@ -1,0 +1,228 @@
+*{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+
+/*HEADER*/
+
+.longinesLogo {
+    width: 150px;
+}
+
+.fuentesNav {
+    font-size: 1rem;
+    padding: 10px;
+}
+
+.encabezado {
+    /* background-color: bisque; */
+    border-top: solid 20px #cccccc00;
+    /* border-bottom: solid 1px #c1101a; */
+    margin-bottom: 30px;
+}
+
+nav li a {
+    text-transform: uppercase;
+    text-decoration: none;
+    margin: 15px;
+    color: gray;
+    border-left: 1px solid rgb(0, 0, 0);
+    border-right: 1px solid rgb(0, 0, 0);
+    padding: 0 15px;
+}
+
+a:hover {
+    background-color: #967171;
+    color: #fafafa;
+}
+
+/* PRODUCTOS */
+
+.tituloProductos {
+    background-color: #747373;
+    color: #fafafa;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 20px;
+}
+
+.tituloProductos h2 {
+    font-size: 35px;
+}
+
+
+/*CARDS*/
+
+
+.colorBtn {
+    background-color: #010863c2;
+    color: #fafafa;
+    font-size: 18px;
+}
+
+.colorBtn:hover {
+    background-color: rgb(134, 85, 85);
+    color: #fafafa;
+}
+
+
+/*Cards*/
+
+.card-img-top {
+    height: 200px;
+    /* Ajusta la altura deseada */
+    object-fit: cover;
+    object-position: center top;
+}
+
+/* Estilos del formulario de inicio de sesión */
+h1 {
+    text-align: center;
+}
+
+.formulario {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.inputSession {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.btnMios {
+    width: 100%;
+    padding: 10px;
+    background-color:  #010863c2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.btnMios:hover {
+    background-color: #865555;
+}
+
+i {
+    font-size: 35px;
+}
+
+
+
+.banner2img {
+    width: 100%;
+    height: 20rem;
+    background-position: center;
+    background-size:cover;
+    background-repeat:no-repeat;
+}
+
+/*footer*/
+
+footer {
+    background-color: black;
+    width: 100%;
+    height:4rem;
+    }
+
+.footerimg {
+    height: 20px;
+    width: 100px;
+    display: flex;
+    margin: auto;
+    padding-top: 0.3rem;
+    }
+
+footer p {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 0.5rem;
+    margin-bottom: 0px;
+    text-align: center;
+    color: #c5c5c5;
+    }
+
+footer ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding:0px;
+    gap:0.5rem;
+    }
+
+footer a {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-decoration: none;
+    font-size: 0.5rem;
+    color: #c5c5c5;
+    }
+
+footer a:hover {
+    color: white;
+}
+
+
+/*perfil*/
+
+
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .profile-card {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  .profile-card p {
+    margin-bottom: 10px;
+
+  }
+
+  .profile-card .btnMios {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #010863c2;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .profile-card .btnMios:hover {
+    background-color: #010863c2;
+  }
+
+  .profile-card a {
+    display: block;
+    margin-bottom: 10px;
+    color: #010863c2;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+
