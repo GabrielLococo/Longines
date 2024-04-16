@@ -4,14 +4,14 @@ class ProductRepository {
     async addingProduct({ title, description, price, img, code, stock, category, thumbnails }) {
         try {
             if (!title || !description || !price || !code || !stock || !category) {
-                console.log("Todos los campos son obligatorios")
+                console.log("all fields are required. addingProduct")
                 return
             }
 
             const existProduct = await ProductModel.findOne({ code: code })
 
             if (existProduct) {
-                console.log("El código del producto debe ser único.") // tira este error al agregar un producto al REALTIME
+                console.log("product code must be unique. addingProduct . product.repository") // tira este error al agregar un producto al REALTIME
                 return
             }
 
@@ -30,7 +30,7 @@ class ProductRepository {
             return newProduct
 
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error") //change
         }
     }
 
@@ -73,7 +73,7 @@ class ProductRepository {
                 nextLink: hasNextPage ? `/api/products?limit=${limit}&page=${page + 1}&sort=${sort}&query=${query}` : null,
             }
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error") //change
         }
     }
 
@@ -82,14 +82,14 @@ class ProductRepository {
             const product = await ProductModel.findById(id)
 
             if (!product) {
-                console.log("Producto no encontrado")
+                console.log("Product not found  gettingProdById")
                 return null
             }
 
-            console.log("Producto encontrado con éxito.")
+            console.log("Product found success ok")
             return product
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error") //change
         }
     }
 
@@ -97,14 +97,14 @@ class ProductRepository {
         try {
             const updated = await ProductModel.findByIdAndUpdate(id, updatedProduct)
             if (!updated) {
-                console.log("Producto no encontrado.")
+                console.log("Product not found updatingProduct")
                 return null
             }
 
-            console.log("Producto actualizado con éxito.")
+            console.log("Product upload success ok")
             return updated
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error") //change
         }
     }
 
@@ -112,13 +112,13 @@ class ProductRepository {
         try {
             const deleted = await ProductModel.findByIdAndDelete(id)
             if (!deleted) {
-                console.log("No se encontró el producto.")
+                console.log("Product not found deletingProduct")
                 return null
             }
-            console.log("Producto eliminado con éxito.")
+            console.log("delete product success ok deletingProduct")
             return deleted
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error")  //change
         }
     }
 }

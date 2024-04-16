@@ -10,7 +10,7 @@ class UserController {
         try {
             const existUser = await UserModel.findOne({ email })
             if (existUser) {
-                return res.status(400).send("El usuario ya existe")
+                return res.status(400).send("user already exist")
             }
 
             const newCart = new CartModel()
@@ -39,7 +39,7 @@ class UserController {
             res.redirect("/api/users/profile")
         } catch (error) {
             console.error(error)
-            res.status(500).send("Error interno del servidor")
+            res.status(500).send("server error register")
         }
     }
 
@@ -49,12 +49,12 @@ class UserController {
             const findedUser = await UserModel.findOne({ email })
 
             if (!findedUser) {
-                return res.status(401).send("Usuario no válido")
+                return res.status(401).send("User not valid")
             }
 
             const isValid = isValidPassword(password, findedUser)
             if (!isValid) {
-                return res.status(401).send("Contraseña incorrecta")
+                return res.status(401).send("not valid password")
             }
 
             const token = jwt.sign({ user: findedUser }, "coderhouse", {
@@ -69,7 +69,7 @@ class UserController {
             res.redirect("/api/users/profile")
         } catch (error) {
             console.error(error)
-            res.status(500).send("Error interno del servidor")
+            res.status(500).send("server error login")
         }
     }
 
@@ -86,7 +86,7 @@ class UserController {
 
     async admin(req, res) {
         if (req.user.user.role !== "admin") {
-            return res.status(403).send("Acceso denegado")
+            return res.status(403).send("access not alowed. only for admins.")
         }
         res.render("admin")
     }

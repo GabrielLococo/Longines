@@ -7,7 +7,7 @@ socket.on("products", (data) => {
 const renderProducts = (products) => {
     const conteinerProducts = document.getElementById("conteinerProducts")
     if (!conteinerProducts) {
-        console.error("No se encontró el elemento con ID 'conteinerProducts'")
+        console.error("id not found .renderProducts. 'conteinerProducts'")
         return
     }
 

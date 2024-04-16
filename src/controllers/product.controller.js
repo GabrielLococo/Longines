@@ -9,7 +9,7 @@ class ProductController {
             const result = await productRepository.addingProduct(newProduct)
             res.json(result)
         } catch (error) {
-            res.status(500).send("Error")
+            res.status(500).send("server error addProduct")
         }
     }
 
@@ -19,7 +19,7 @@ class ProductController {
             const product = await productRepository.gettingProduct(limit, page, sort, query)
             res.json(product)
         } catch (error) { 
-            res.status(500).send("Error")
+            res.status(500).send("server error getProducts")
         }
     }
 
@@ -29,12 +29,12 @@ class ProductController {
             const searched = await productRepository.gettingProdById(id)
             if (!searched) {
                 return res.json({
-                    error: "Producto no encontrado"
+                    error: "Product not find getProductById"
                 });
             }
             res.json(searched)
         } catch (error) {
-            res.status(500).send("Error")
+            res.status(500).send("server error getProductById")
         }
     }
 
@@ -45,7 +45,7 @@ class ProductController {
             const res = await productRepository.updatingProduct(id, updatedProduct)
             res.json(res)
         } catch (error) {
-            res.status(500).send("Error al actualizar el producto")
+            res.status(500).send("server error updateProduct")
         }
     }
 
@@ -55,7 +55,7 @@ class ProductController {
             let res = await productRepository.deletingProduct(id)
             res.json(res)
         } catch (error) {
-            res.status(500).send("Error al eliminar el producto")
+            res.status(500).send("server error deleteProduct")
         }
     }
 }

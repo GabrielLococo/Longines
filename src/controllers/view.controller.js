@@ -42,10 +42,10 @@ class ViewsController {
                 cartId
             })
         } catch (error) {
-            console.error("Error al obtener productos", error)
+            console.error("error getting products renderProducts", error)
             res.status(500).json({
                 status: 'error',
-                error: "Error interno del servidor"
+                error: "server error renderProducts"
             })
         }
     }
@@ -56,8 +56,8 @@ class ViewsController {
             const carrito = await cartRepository.getCartById(cartId)
 
             if (!carrito) {
-                console.log("No existe ese carrito con el id");
-                return res.status(404).json({ error: "Carrito no encontrado" })
+                console.log("that cart ID doesn't exist");
+                return res.status(404).json({ error: "cart not find. renderCart" })
             }
 
             let totalBuy = 0
@@ -79,8 +79,8 @@ class ViewsController {
 
             res.render("carts", { products: productsInCart, totalBuy, cartId })
         } catch (error) {
-            console.error("Error al obtener el carrito", error)
-            res.status(500).json({ error: "Error interno del servidor" })
+            console.error("Error getting cart renderCart", error)
+            res.status(500).json({ error: "server error renderCart" })
         }
     }
 
@@ -96,8 +96,8 @@ class ViewsController {
         try {
             res.render("realtimeproducts")
         } catch (error) {
-            console.log("error en la vista real time", error)
-            res.status(500).json({ error: "Error interno del servidor" })
+            console.log("error on RTproducts view", error)
+            res.status(500).json({ error: "server error renderRealTimeProducts" })
         }
     }
 
@@ -111,20 +111,20 @@ class ViewsController {
 
     async renderPurchase(req, res) {
         try {
-          console.log('*** RENDER PURCHASE');
-          console.log('** req.params.cid:' + req.params.cid);
-          console.log('** req.params.tid:' + req.params.tid);
-          const cart = await cartRepository.getCartById(req.params.cid);
-          const ticket = await ticketRepository.getTicketById(req.params.tid);
-          const purchaser = await UserModel.findById(ticket.purchaser);
-          const products = cart.products;
+          console.log('>>>  RENDER PURCHASE TICKETBUY')
+          console.log('>>>  req.params.cid:' + req.params.cid)
+          console.log('>>>  req.params.tid:' + req.params.tid)
+          const cart = await cartRepository.getCartById(req.params.cid)
+          const ticket = await ticketRepository.getTicketById(req.params.tid)
+          const purchaser = await UserModel.findById(ticket.purchaser)
+          const products = cart.products
           const cartInfo =
-            ' Pendientes de compra. Sin stock por el momento';
-          const title = 'Compra Finalizada';
-          const hasTicket = true;
+            ' sorry, out of stock for now'
+          const title = 'buy finished'
+          const hasTicket = true
     
           if (!req.params.tid) {
-            throw new Error('El ID del ticket no está definido');
+            throw new Error('ticket id is not defined')
           }
     
           res.render('carts', {
@@ -137,8 +137,8 @@ class ViewsController {
             hasTicket,
           });
         } catch (error) {
-          console.error('Error al renderizar finalizar compra:', error);
-          res.status(500).json({ error: 'Error interno del servidor' });
+          console.error('error trying to render buy :', error);
+          res.status(500).json({ error: 'server error renderPurchase' });
         }
       }
 }

@@ -6,18 +6,18 @@ const checkUserRole = (allowedRoles) => (req, res, next) => {
     if (token) {
         jwt.verify(token, 'coderhouse', (err, decoded) => {
             if (err) {
-                res.status(403).send('Acceso denegado. Token inválido.')
+                res.status(403).send('Denied access. invalid Token. checkUserRole')
             } else {
                 const userRole = decoded.user.role
                 if (allowedRoles.includes(userRole)) {
                     next()
                 } else {
-                    res.status(403).send('Acceso denegado. No tienes permiso para acceder a esta página.')
+                    res.status(403).send('Denied access. not alowed on this page. checkUserRole')
                 }
             }
         })
     } else {
-        res.status(403).send('Acceso denegado. Token no proporcionado.')
+        res.status(403).send('Denied access. need Token. checkUserRole ')
     }
 }
 

@@ -15,12 +15,12 @@ class CartRepository {
         try {
             const cart = await CartModel.findById(cartId)
             if (!cart) {
-                console.log("No existe ese carrito con el id")
+                console.log("id product doesn't exist .getCartById")
                 return null
             }
             return cart
         } catch (error) {
-            throw new Error("Error al obtener el carrito cart.repository")
+            throw new Error("Error getting cart cart.repository")
         }
     }
 
@@ -38,7 +38,7 @@ class CartRepository {
             await cart.save()
             return cart
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error addProductToCart")
         }
     }
 
@@ -46,13 +46,13 @@ class CartRepository {
         try {
             const cart = await CartModel.findById(cartId)
             if (!cart) {
-                throw new Error('Carrito no encontrado')
+                throw new Error('Cart not found')
             }
             cart.products = cart.products.filter(item => item.product._id.toString() !== productId)
             await cart.save()
             return cart
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error deleting product . deletingProduct")
         }
     }
 
@@ -61,7 +61,7 @@ class CartRepository {
             const cart = await CartModel.findById(cartId)
 
             if (!cart) {
-                throw new Error('Carrito no encontrado')
+                throw new Error('Cart not found')
             }
 
             cart.products = updatedProducts
@@ -70,7 +70,7 @@ class CartRepository {
             await cart.save()
             return cart
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error updating products on cart ")
         }
     }
 
@@ -80,7 +80,7 @@ class CartRepository {
 
             if (!cart) {
                 
-                throw new Error('Carrito no encontrado')
+                throw new Error('Cart not found updateAmountOnCart')
             }
             
             
@@ -95,11 +95,11 @@ class CartRepository {
                 await cart.save()
                 return cart
             } else {
-                throw new Error('Producto no encontrado en el carrito')
+                throw new Error('Product not found in cart  updateAmountOnCart')
             }
 
         } catch (error) {
-            throw new Error("Error al actualizar las cantidades")
+            throw new Error("Error updating quantity  updateAmountOnCart")
         }
     }
 
@@ -112,13 +112,13 @@ class CartRepository {
             )
 
             if (!cart) {
-                throw new Error('Carrito no encontrado')
+                throw new Error('Cart not found emptyCart')
             }
 
             return cart
 
         } catch (error) {
-            throw new Error("Error")
+            throw new Error("Error emptyCart")
         }
     }
 }

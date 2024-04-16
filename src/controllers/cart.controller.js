@@ -15,7 +15,7 @@ class CartController {
             const newCart = await cartRepository.createCart()
             res.json(newCart);
         } catch (error) {
-            res.status(500).send("Error al crear carrito")
+            res.status(500).send("server error newCart")
         }
     }
 
@@ -24,11 +24,11 @@ class CartController {
         try {
             const products = await cartRepository.getProductFromCart(carritoId)
             if (!products) {
-                return res.status(404).json({ error: "Carrito no encontrado" })
+                return res.status(404).json({ error: "cart not find" })
             }
             res.json(products)
         } catch (error) {
-            res.status(500).send("Error")
+            res.status(500).send("server error getProductFromCart ")
         }
     }
 
@@ -44,7 +44,7 @@ class CartController {
             res.redirect(`/carts/${carritoID}`)
         } catch (error) {
             console.log('error addproduct' + error)
-            res.status(500).send({ status: "Error", error: error })
+            res.status(500).send({ status: "server error addProductToCart", error: error })
         }
     }
 
@@ -55,11 +55,11 @@ class CartController {
             const updatedCart = await cartRepository.deletingProduct(cartId, productId)
             res.json({
                 status: 'success',
-                message: 'Producto eliminado del carrito correctamente',
+                message: 'deleteProductFromCart success ok',
                 updatedCart,
             })
         } catch (error) {
-            res.status(500).send("Error")
+            res.status(500).send("server error deleteProductFromCart")
         }
     }
 
@@ -70,7 +70,7 @@ class CartController {
             const updatedCart = await cartRepository.updateProductsOnCart(cartId, updatedProducts)
             res.json(updatedCart)
         } catch (error) {
-            res.status(500).send("Error")
+            res.status(500).send("server error updateProductsOnCart")
         }
     }
 
@@ -83,12 +83,12 @@ class CartController {
 
             res.json({
                 status: 'success',
-                message: 'Cantidad del producto actualizada ',
+                message: 'quantity product update ok ',
                 updatedCart,
             });
 
         } catch (error) {
-            res.status(500).send("Error al actualizar la cantidad de productos")
+            res.status(500).send("server error updateAmount ")
         }
     }
 
@@ -99,12 +99,12 @@ class CartController {
 
             res.json({
                 status: 'success',
-                message: 'Productos del carrito fueron eliminados correctamente',
+                message: 'detele products from cart success ok',
                 updatedCart,
             })
 
         } catch (error) {
-            res.status(500).send("Error")
+            res.status(500).send("server error emptyCart")
         }
     }
 
@@ -143,8 +143,8 @@ class CartController {
             // res.status(200).json({ ProductsNotAvailable })
             res.status(200).json({ cartId: cart._id, ticketId: ticket._id })
         } catch (error) {
-            console.error('Error al procesar la compra:', error)
-            res.status(500).json({ error: 'Error interno del servidor' })
+            console.error('Error procesing buy:', error)
+            res.status(500).json({ error: 'server error endBuy' })
         }
     }
 

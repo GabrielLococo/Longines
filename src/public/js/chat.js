@@ -3,11 +3,11 @@ let user
 const chatBox = document.getElementById("chatBox")
 
 Swal.fire({
-    title: "Identificate", 
+    title: "identify yourself", 
     input: "text",
-    text: "Ingresa un usuario para identificarte en el chat", 
+    text: "write ur name and start chating!", 
     inputValidator: (value) => {
-        return !value && "Necesitas escribir un nombre para continuar"
+        return !value && "Need a name to chat"
     }, 
     allowOutsideClick: false,
 }).then( result => {
