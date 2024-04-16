@@ -24,9 +24,13 @@
                 <h2 class="card-title">{{title}}</h2>
                 <p class="card-text">{{description}}</p>
                 <p class="card-text">Price: ${{price}}</p>
-                <form action="/api/carts/{{../cartId}}/product/{{id}}" method="POST">
+                {{!-- <form action="/api/carts/{{../cartId}}/product/{{id}}" method="POST">
                     <button class="btnMios" type="submit">Agregar al Carrito</button>
-                </form>
+                </form> --}}
+                <form action="/api/carts/{{../cartId}}/product/{{id}}" method="POST" onsubmit="return updateAction(this);">
+            <input id="quantityInput" type="number" min="1" max="{{this.stock}}" value="1" name="quantity" class="btn btn-warning btn-sm" />
+            <button class="btn btn-success btn-sm" type="submit">Agregar al Carrito</button>
+          </form>
             </div>
         </div>
         {{/each}}
@@ -44,3 +48,11 @@
         <p>Pagina {{currentPage}} de {{totalPages}} </p>
     </div>
 </div>
+
+<script>
+    function updateAction(form) {
+      let quantity = document.getElementById('quantityInput').value;
+      form.action += quantity > 1 ? ("?quantity=" + quantity) : "";
+      return true;
+    }
+  </script>
