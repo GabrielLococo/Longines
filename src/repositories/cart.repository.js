@@ -11,14 +11,14 @@ class CartRepository {
         }
     }
     
-    async getCartById(idCarrito) {
+    async getCartById(cartId) {
         try {
-            const carrito = await CartModel.findById(idCarrito)
-            if (!carrito) {
+            const cart = await CartModel.findById(cartId)
+            if (!cart) {
                 console.log("No existe ese carrito con el id")
                 return null
             }
-            return carrito
+            return cart
         } catch (error) {
             throw new Error("Error al obtener el carrito cart.repository")
         }
@@ -26,17 +26,17 @@ class CartRepository {
 
     async addProductToCart(cartId, productId, quantity = 1) {
         try {
-            const carrito = await this.getCartById(cartId) 
-            const existeProducto = carrito.products.find(item => item.product._id.toString() === productId)
+            const cart = await this.getCartById(cartId) 
+            const existeProducto = cart.products.find(item => item.product._id.toString() === productId)
 
             if (existeProducto) {
                 existeProducto.quantity += quantity
             } else {
-                carrito.products.push({ product: productId, quantity })
+                cart.products.push({ product: productId, quantity })
             }
-            carrito.markModified("products")
-            await carrito.save()
-            return carrito
+            cart.markModified("products")
+            await cart.save()
+            return cart
         } catch (error) {
             throw new Error("Error")
         }

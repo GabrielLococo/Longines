@@ -8,7 +8,14 @@ const cors = require("cors")
 const path = require('path')
 const PORT = 8080
 require("./database.js")
-
+//--------------------------------------------------experimento handlebars error
+const hbs = exphbs.create({
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+    },
+})
+//--------------------------------------------------
 const productsRouter = require("./routes/products.router.js")
 const cartsRouter = require("./routes/carts.router.js")
 const viewsRouter = require("./routes/views.router.js")
@@ -30,7 +37,7 @@ const authMiddleware = require("./middleware/authmiddleware.js")
 app.use(authMiddleware)
 
 //HANDLEBARS
-app.engine("handlebars", exphbs.engine())
+app.engine("handlebars", hbs.engine)  //-- ***  ",exphbs.engine() "  asi estaba antes.  
 app.set("view engine", "handlebars")
 app.set("views", "./src/views")
 

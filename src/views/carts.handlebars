@@ -19,6 +19,16 @@
 <h3 class="mt-2">Total de la compra: ${{totalBuy}}</h3>
 <button onclick="endBuy('{{cartId}}')" class="btn btn-warning">Terminar Compra</button>
 
+{{#if hasTicket}}
+    <h2>Ticket de Compra</h2>
+    <h4>Comprador:</h4>
+    <p>{{purchaser.first_name}} {{purchaser.last_name}}</p>
+    <p>{{purchaser.email}}</p>
+    <h4>Código: {{ticket.code}}</h4>
+    <h4>Fecha Emisión: {{ticket.purchase_datetime}}</h4>
+    <h4>Total Compra: {{ticket.amount}}</h4>
+{{/if}}
+
 <script>
     function deletingProduct(cartId, productId) {
         fetch(`/api/carts/${cartId}/product/${productId}`, {
@@ -50,6 +60,7 @@
             });
     }
 
+    /*
     function endBuy(cartId) {
         fetch(`/api/carts/${cartId}/purchase`, {
             method: 'POST'
@@ -64,4 +75,25 @@
                 console.error('Error:', error);
             });
     }
+    */
+
+    function endBuy(cartId) {
+    fetch(`/api/carts/${cartId}/purchase`, {
+        method: 'POST'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al finalizar la compra')
+            }
+            return response.json()
+        })
+        .then(data => {
+            const ticketId = data.ticketId;
+            const cartId = data.cartId;
+            window.location.href = `/endBuy/${cartId}/ticket/${ticketId}`
+        })
+        .catch(error => {
+            console.error('Error:', error)
+        })
+}
 </script>

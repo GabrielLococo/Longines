@@ -12,6 +12,7 @@ router.get("/register", viewsController.renderRegister);
 router.get("/realtimeproducts", checkUserRole(['admin']), viewsController.renderRealTimeProducts);
 router.get("/chat", checkUserRole(['usuario']) ,viewsController.renderChat);
 router.get("/", viewsController.renderHome);
+router.get("/endBuy/:cid/ticket/:tid", viewsController.renderPurchase);
 
 module.exports = router;
 

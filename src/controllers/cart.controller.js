@@ -140,7 +140,8 @@ class CartController {
             cart.products = cart.products.filter(item => ProductsNotAvailable.some(productId => productId.equals(item.product)))
             await cart.save()
 
-            res.status(200).json({ ProductsNotAvailable })
+            // res.status(200).json({ ProductsNotAvailable })
+            res.status(200).json({ cartId: cart._id, ticketId: ticket._id })
         } catch (error) {
             console.error('Error al procesar la compra:', error)
             res.status(500).json({ error: 'Error interno del servidor' })
