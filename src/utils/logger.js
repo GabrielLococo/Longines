@@ -2,6 +2,7 @@ const winston = require('winston')
 const configObject = require('../config/config.js')
 const {node_env} = configObject
 
+
 const levels = {
     level: {
         fatal: 0,
@@ -20,24 +21,6 @@ const levels = {
         debug: "white"
     }
 }
-
-// const logger = winston.createLogger({
-//     levels: levels.level,
-//     transports: [
-//         new winston.transports.Console({
-//             level: 'http',
-//             format: winston.format.combine(
-//                 winston.format.colorize({colors: levels.colors}),
-//                 winston.format.simple()
-//             )
-//         }),
-//         new winston.transports.File({
-//             filename: './errors.log',
-//             level: 'warning',
-//             format: winston.format.simple()
-//         }) 
-//     ]
-// })
 
 
 //logger Desarrollo

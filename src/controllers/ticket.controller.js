@@ -5,12 +5,12 @@ class TicketManager {
     try {
       const ticket = await TicketModel.findById(id);
       if (!ticket) {
-        console.log('Ticket not find');
+        req.logger.warning('ticket not found')
         return null;
       }
       return ticket;
     } catch (error) {
-      console.log('Error geting ticket getTicketById', error);
+      req.logger.error('Error geting ticket getTicketById', error)
     }
   }
 }

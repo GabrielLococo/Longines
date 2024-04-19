@@ -4,7 +4,7 @@ class ProductRepository {
     async addingProduct({ title, description, price, img, code, stock, category, thumbnails }) {
         try {
             if (!title || !description || !price || !code || !stock || !category) {
-                console.log("all fields are required. addingProduct")
+                req.logger.warning('all fields are required')
                 return
             }
 
@@ -30,7 +30,7 @@ class ProductRepository {
             return newProduct
 
         } catch (error) {
-            throw new Error("Error") //change
+            req.logger.error('error addingProduct')
         }
     }
 
@@ -73,7 +73,7 @@ class ProductRepository {
                 nextLink: hasNextPage ? `/api/products?limit=${limit}&page=${page + 1}&sort=${sort}&query=${query}` : null,
             }
         } catch (error) {
-            throw new Error("Error") //change
+            req.logger.error('error gettingProduct')
         }
     }
 
@@ -82,14 +82,14 @@ class ProductRepository {
             const product = await ProductModel.findById(id)
 
             if (!product) {
-                console.log("Product not found  gettingProdById")
+                req.logger.error("Product not found  gettingProdById")
                 return null
             }
 
-            console.log("Product found success ok")
+            req.logger.info("Product found success ok")
             return product
         } catch (error) {
-            throw new Error("Error") //change
+            req.logger.error('error gettingProdById')
         }
     }
 
@@ -97,14 +97,14 @@ class ProductRepository {
         try {
             const updated = await ProductModel.findByIdAndUpdate(id, updatedProduct)
             if (!updated) {
-                console.log("Product not found updatingProduct")
+                req.logger.error("Product not found updatingProduct")
                 return null
             }
 
-            console.log("Product upload success ok")
+            req.logger.info("Product upload success ok")
             return updated
         } catch (error) {
-            throw new Error("Error") //change
+            req.logger.error("Error updatingProduct") 
         }
     }
 
@@ -112,13 +112,13 @@ class ProductRepository {
         try {
             const deleted = await ProductModel.findByIdAndDelete(id)
             if (!deleted) {
-                console.log("Product not found deletingProduct")
+                req.logger.error("Product not found deletingProduct")
                 return null
             }
-            console.log("delete product success ok deletingProduct")
+            req.logger.info("delete product success ok deletingProduct")
             return deleted
         } catch (error) {
-            throw new Error("Error")  //change
+            req.logger.error('error deletingProduct')
         }
     }
 }

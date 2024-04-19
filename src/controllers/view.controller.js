@@ -42,7 +42,7 @@ class ViewsController {
                 cartId
             })
         } catch (error) {
-            console.error("error getting products renderProducts", error)
+            req.logger.error("error getting products renderProducts", error)
             res.status(500).json({
                 status: 'error',
                 error: "server error renderProducts"
@@ -56,7 +56,7 @@ class ViewsController {
             const carrito = await cartRepository.getCartById(cartId)
 
             if (!carrito) {
-                console.log("that cart ID doesn't exist");
+                req.logger.warning("that cart ID doesn't exist")
                 return res.status(404).json({ error: "cart not find. renderCart" })
             }
 
@@ -79,7 +79,7 @@ class ViewsController {
 
             res.render("carts", { products: productsInCart, totalBuy, cartId })
         } catch (error) {
-            console.error("Error getting cart renderCart", error)
+            req.logger.error("Error getting cart renderCart", error)
             res.status(500).json({ error: "server error renderCart" })
         }
     }
@@ -96,7 +96,7 @@ class ViewsController {
         try {
             res.render("realtimeproducts")
         } catch (error) {
-            console.log("error on RTproducts view", error)
+            req.logger.error("error on RTproducts view", error)
             res.status(500).json({ error: "server error renderRealTimeProducts" })
         }
     }
@@ -124,7 +124,7 @@ class ViewsController {
           const hasTicket = true
     
           if (!req.params.tid) {
-            throw new Error('ticket id is not defined')
+            req.logger.error('ticket id is not defined')
           }
     
           res.render('carts', {
@@ -137,7 +137,7 @@ class ViewsController {
             hasTicket,
           });
         } catch (error) {
-          console.error('error trying to render buy :', error);
+          req.logger.error('error trying to render buy :', error);
           res.status(500).json({ error: 'server error renderPurchase' });
         }
       }

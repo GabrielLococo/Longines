@@ -16,6 +16,7 @@ class CartController {
             res.json(newCart);
         } catch (error) {
             res.status(500).send("server error newCart")
+            req.logger.error('server error newCart ')
         }
     }
 
@@ -24,10 +25,12 @@ class CartController {
         try {
             const products = await cartRepository.getProductFromCart(carritoId)
             if (!products) {
-                return res.status(404).json({ error: "cart not find" })
+                req.logger.warning('cart not found')
+                return res.status(404).json({ error: "cart not found" })
             }
             res.json(products)
         } catch (error) {
+            req.logger.error('server error getProductFromCart')
             res.status(500).send("server error getProductFromCart ")
         }
     }
@@ -43,7 +46,7 @@ class CartController {
 
             res.redirect(`/carts/${carritoID}`)
         } catch (error) {
-            console.log('error addproduct' + error)
+            req.logger.error('server error addproducttocart')
             res.status(500).send({ status: "server error addProductToCart", error: error })
         }
     }
@@ -60,6 +63,7 @@ class CartController {
             })
         } catch (error) {
             res.status(500).send("server error deleteProductFromCart")
+            req.logger.error('server error deleteProductFromCart')
         }
     }
 
@@ -71,6 +75,7 @@ class CartController {
             res.json(updatedCart)
         } catch (error) {
             res.status(500).send("server error updateProductsOnCart")
+            req.logger.error('server error updateProductsOnCart')
         }
     }
 
@@ -105,6 +110,7 @@ class CartController {
 
         } catch (error) {
             res.status(500).send("server error emptyCart")
+            req.logger.warning('server error emptyCart')
         }
     }
 
@@ -143,7 +149,7 @@ class CartController {
             // res.status(200).json({ ProductsNotAvailable })
             res.status(200).json({ cartId: cart._id, ticketId: ticket._id })
         } catch (error) {
-            console.error('Error procesing buy:', error)
+            req.logger.error('server error. Error procesing buy:', error)
             res.status(500).json({ error: 'server error endBuy' })
         }
     }

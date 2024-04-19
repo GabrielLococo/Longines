@@ -11,7 +11,8 @@ class UserController {
         try {
             const existUser = await UserModel.findOne({ email })
             if (existUser) {
-                return res.status(400).send("user already exist")
+                return req.logger.warning('user already exist'),
+                res.status(400).send("user already exist")
             }
 
             const newCart = new CartModel()
@@ -40,8 +41,7 @@ class UserController {
             req.logger.info('user register ok')
             res.redirect("/api/users/profile")
         } catch (error) {
-            req.logger.info('server error')
-            console.error(error)
+            req.logger.error('server error register')
             res.status(500).send("server error register")
         }
     }
@@ -72,7 +72,7 @@ class UserController {
             res.redirect("/api/users/profile")
         } catch (error) {
             console.error(error)
-            req.logger.info('server error')
+            req.logger.error('server error login')
             res.status(500).send("server error login")
         }
     }
@@ -91,7 +91,8 @@ class UserController {
 
     async admin(req, res) {
         if (req.user.user.role !== "admin") {
-            return res.status(403).send("access not alowed. only for admins.")
+            return res.status(403).send("access not alowed. only for admins."),
+            req.logger.warning('access not alowed. only for admins.')
         }
         req.logger.info('user admin login ok')
         res.render("admin")
