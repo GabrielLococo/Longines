@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const { createHash, isValidPassword } = require("../utils/hashbcryp.js")
 const UserDTO = require("../dto/user.dto.js")
 
+
 class UserController {
     async register(req, res) {
         const { first_name, last_name, email, password, age } = req.body
@@ -36,8 +37,10 @@ class UserController {
                 httpOnly: true
             })
 
+            req.logger.info('user register ok')
             res.redirect("/api/users/profile")
         } catch (error) {
+            req.logger.info('server error')
             console.error(error)
             res.status(500).send("server error register")
         }
@@ -65,10 +68,11 @@ class UserController {
                 maxAge: 3600000,
                 httpOnly: true
             })
-
+            req.logger.info('user login ok')
             res.redirect("/api/users/profile")
         } catch (error) {
             console.error(error)
+            req.logger.info('server error')
             res.status(500).send("server error login")
         }
     }
@@ -80,6 +84,7 @@ class UserController {
     }
 
     async logout(req, res) {
+        req.logger.info('logout ok')
         res.clearCookie("lococotokencookie")
         res.redirect("/login")
     }
@@ -88,6 +93,7 @@ class UserController {
         if (req.user.user.role !== "admin") {
             return res.status(403).send("access not alowed. only for admins.")
         }
+        req.logger.info('user admin login ok')
         res.render("admin")
     }
 }

@@ -9,6 +9,7 @@ class ProductController {
             const result = await productRepository.addingProduct(newProduct)
             res.json(result)
         } catch (error) {
+            req.logger.info('server error addProduct')
             res.status(500).send("server error addProduct")
         }
     }
@@ -19,7 +20,7 @@ class ProductController {
             const product = await productRepository.gettingProduct(limit, page, sort, query)
             res.json(product)
         } catch (error) { 
-            res.status(500).send("server error getProducts")
+            req.logger.info('server error getProducts')
         }
     }
 
@@ -34,7 +35,7 @@ class ProductController {
             }
             res.json(searched)
         } catch (error) {
-            res.status(500).send("server error getProductById")
+            req.logger.info('server error getProductById')
         }
     }
 
@@ -45,7 +46,7 @@ class ProductController {
             const res = await productRepository.updatingProduct(id, updatedProduct)
             res.json(res)
         } catch (error) {
-            res.status(500).send("server error updateProduct")
+            req.logger.info('server error updateProduct')
         }
     }
 
@@ -55,7 +56,7 @@ class ProductController {
             let res = await productRepository.deletingProduct(id)
             res.json(res)
         } catch (error) {
-            res.status(500).send("server error deleteProduct")
+            req.logger.info('server error deleteProduct')
         }
     }
 }

@@ -20,12 +20,16 @@ const productsRouter = require("./routes/products.router.js")
 const cartsRouter = require("./routes/carts.router.js")
 const viewsRouter = require("./routes/views.router.js")
 const userRouter = require("./routes/user.router.js")
+//logger
+const addLogger = require('./utils/logger.js')
 
 //MIDDLEWARES
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(cors())
+//logger middleware
+app.use(addLogger)
 
 //PASSPORT
 app.use(passport.initialize())
@@ -47,6 +51,15 @@ app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/api/users", userRouter)
 app.use("/", viewsRouter)
+
+//rutas de logger test
+app.get('/loggertest',(req, res) =>{
+    req.logger.error('error message')
+    req.logger.debug('debug message')
+    req.logger.info('info message')
+    req.logger.warning('warning message')
+    res.send('logs test')
+})
 
 const httpServer = app.listen(PORT, () => {
     console.log(`SV listening http://localhost:${PORT}`)
