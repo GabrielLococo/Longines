@@ -8,6 +8,7 @@ const cors = require("cors")
 const path = require('path')
 const PORT = 8080
 require("./database.js")
+const FakerController = require('./controllers/faker.controller.js')
 //--------------------------------------------------experimento handlebars error
 const hbs = exphbs.create({
     runtimeOptions: {
@@ -60,6 +61,10 @@ app.get('/loggertest',(req, res) =>{
     req.logger.warning('warning message')
     res.send('logs test')
 })
+
+//mocking faker
+const fakerController = new FakerController()
+app.use('/mockingproducts', require('./routes/faker.router.js')(fakerController))
 
 const httpServer = app.listen(PORT, () => {
     console.log(`SV listening http://localhost:${PORT}`)

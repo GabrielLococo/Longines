@@ -3,6 +3,8 @@ const CartModel = require("../models/cart.model.js")
 const jwt = require("jsonwebtoken")
 const { createHash, isValidPassword } = require("../utils/hashbcryp.js")
 const UserDTO = require("../dto/user.dto.js")
+const generateProducts = require('../utils/faker.js')
+
 
 
 class UserController {
@@ -97,6 +99,14 @@ class UserController {
         req.logger.info('user admin login ok')
         res.render("admin")
     }
+
+    // async generateProducts(req,res) {
+    //     const fakerProducts = []
+    //     for (let i = 0; i < 10; i++) {
+    //         fakerProducts.push(generateProducts())
+    //     }
+    //     res.json(fakerProducts)
+    // }
 }
 
 module.exports = UserController
