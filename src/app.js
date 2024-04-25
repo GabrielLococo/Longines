@@ -23,6 +23,8 @@ const viewsRouter = require("./routes/views.router.js")
 const userRouter = require("./routes/user.router.js")
 //logger
 const addLogger = require('./utils/logger.js')
+//handleError
+const handleError = require('./middleware/handleError.js')
 
 //MIDDLEWARES
 app.use(express.urlencoded({ extended: true }))
@@ -31,6 +33,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(cors())
 //logger middleware
 app.use(addLogger)
+//handleError middleware
+app.use(handleError)
 
 //PASSPORT
 app.use(passport.initialize())

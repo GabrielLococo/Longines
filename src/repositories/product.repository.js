@@ -1,4 +1,9 @@
 const ProductModel = require("../models/product.model.js")
+const CustomError = require('../services/errors/customError.js')
+const customError = new CustomError()
+const ErrorsInfo = require('../services/errors/errorsInfo.js')
+const errorsInfo = new ErrorsInfo()
+const { errorsCode } = require("../services/errors/errorsCode.js")
 
 class ProductRepository {
     async addingProduct({ title, description, price, img, code, stock, category, thumbnails }) {
@@ -79,15 +84,20 @@ class ProductRepository {
 
     async gettingProdById(id) {
         try {
+            const productId = req.params.pid
             const product = await ProductModel.findById(id)
+            
 
             if (!product) {
-                req.logger.error("Product not found  gettingProdById")
-                return null
+                customError.createError({
+                    name: "Id not found",
+                    cause: errorsInfo.productIdNotFound({ productId }),
+                    message: "Error getting the product",
+                    code: errorsCode.BAD_REQUEST
+                })
+            } else {
+                res.json({ message: "Product found:", product })
             }
-
-            req.logger.info("Product found success ok")
-            return product
         } catch (error) {
             req.logger.error('error gettingProdById')
         }
@@ -95,14 +105,19 @@ class ProductRepository {
 
     async updatingProduct(id, updatedProduct) {
         try {
+            const productId = req.params.pid
             const updated = await ProductModel.findByIdAndUpdate(id, updatedProduct)
             if (!updated) {
-                req.logger.error("Product not found updatingProduct")
-                return null
+                customError.createError({
+                    name: "Id not found",
+                    cause: errorsInfo.productIdNotFound({ productId }),
+                    message: "Error getting the product",
+                    code: errorsCode.BAD_REQUEST
+                })
+            } else {
+                req.logger.info("Product upload success ok")
+                return updated
             }
-
-            req.logger.info("Product upload success ok")
-            return updated
         } catch (error) {
             req.logger.error("Error updatingProduct") 
         }
@@ -110,13 +125,19 @@ class ProductRepository {
 
     async deletingProduct(id) {
         try {
+            const productId = req.params.pid
             const deleted = await ProductModel.findByIdAndDelete(id)
             if (!deleted) {
-                req.logger.error("Product not found deletingProduct")
-                return null
-            }
-            req.logger.info("delete product success ok deletingProduct")
-            return deleted
+                customError.createError({
+                    name: "Id not found",
+                    cause: errorsInfo.productIdNotFound({ productId }),
+                    message: "Error getting the product",
+                    code: errorsCode.BAD_REQUEST
+                })
+            } else {
+                req.logger.info("delete product success ok deletingProduct")
+                return deleted
+            }   
         } catch (error) {
             req.logger.error('error deletingProduct')
         }
