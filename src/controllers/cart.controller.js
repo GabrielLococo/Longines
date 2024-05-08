@@ -5,6 +5,7 @@ const cartRepository = new CartRepository()
 const ProductRepository = require("../repositories/product.repository.js")
 const productRepository = new ProductRepository()
 const { generateUniqueCode, calculateTotal } = require("../utils/cartutils.js")
+const logger = require("../utils/logger.js")
 
 
 
@@ -16,7 +17,7 @@ class CartController {
             res.json(newCart);
         } catch (error) {
             res.status(500).send("server error newCart")
-            req.logger.error('server error newCart ')
+            logger.error('server error newCart ', error)
         }
     }
 
@@ -25,12 +26,12 @@ class CartController {
         try {
             const products = await cartRepository.getProductFromCart(carritoId)
             if (!products) {
-                req.logger.warning('cart not found')
+                logger.warning('cart not found')
                 return res.status(404).json({ error: "cart not found" })
             }
             res.json(products)
         } catch (error) {
-            req.logger.error('server error getProductFromCart')
+            logger.error('server error getProductFromCart', error)
             res.status(500).send("server error getProductFromCart ")
         }
     }
@@ -46,7 +47,7 @@ class CartController {
 
             res.redirect(`/carts/${carritoID}`)
         } catch (error) {
-            req.logger.error('server error addproducttocart')
+            logger.error('server error addproducttocart', error)
             res.status(500).send({ status: "server error addProductToCart", error: error })
         }
     }
@@ -63,7 +64,7 @@ class CartController {
             })
         } catch (error) {
             res.status(500).send("server error deleteProductFromCart")
-            req.logger.error('server error deleteProductFromCart')
+            logger.error('server error deleteProductFromCart', error)
         }
     }
 
@@ -75,7 +76,7 @@ class CartController {
             res.json(updatedCart)
         } catch (error) {
             res.status(500).send("server error updateProductsOnCart")
-            req.logger.error('server error updateProductsOnCart')
+            logger.error('server error updateProductsOnCart', error)
         }
     }
 
@@ -110,7 +111,7 @@ class CartController {
 
         } catch (error) {
             res.status(500).send("server error emptyCart")
-            req.logger.warning('server error emptyCart')
+            logger.error('server error emptyCart', error)
         }
     }
 
@@ -149,7 +150,7 @@ class CartController {
             // res.status(200).json({ ProductsNotAvailable })
             res.status(200).json({ cartId: cart._id, ticketId: ticket._id })
         } catch (error) {
-            req.logger.error('server error. Error procesing buy:', error)
+            logger.error('server error. Error procesing buy:', error)
             res.status(500).json({ error: 'server error endBuy' })
         }
     }

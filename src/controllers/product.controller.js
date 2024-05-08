@@ -1,5 +1,6 @@
 const ProductRepository = require("../repositories/product.repository.js")
 const productRepository = new ProductRepository()
+const logger = require("../utils/logger.js")
 
 class ProductController {
 
@@ -9,7 +10,7 @@ class ProductController {
             const result = await productRepository.addingProduct(newProduct)
             res.json(result)
         } catch (error) {
-            req.logger.info('server error addProduct')
+            logger.info('server error addProduct')
             res.status(500).send("server error addProduct")
         }
     }
@@ -20,7 +21,7 @@ class ProductController {
             const product = await productRepository.gettingProduct(limit, page, sort, query)
             res.json(product)
         } catch (error) { 
-            req.logger.info('server error getProducts')
+            logger.info('server error getProducts')
         }
     }
 
@@ -35,7 +36,7 @@ class ProductController {
             }
             res.json(searched)
         } catch (error) {
-            req.logger.info('server error getProductById')
+            logger.info('server error getProductById')
         }
     }
 
@@ -46,7 +47,7 @@ class ProductController {
             const res = await productRepository.updatingProduct(id, updatedProduct)
             res.json(res)
         } catch (error) {
-            req.logger.info('server error updateProduct')
+            logger.info('server error updateProduct')
         }
     }
 
@@ -56,7 +57,7 @@ class ProductController {
             let res = await productRepository.deletingProduct(id)
             res.json(res)
         } catch (error) {
-            req.logger.info('server error deleteProduct')
+            logger.info('server error deleteProduct')
         }
     }
 }

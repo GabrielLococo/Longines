@@ -3,19 +3,20 @@ const CustomError = require('../services/errors/customError.js')
 const ErrorsInfo = require('../services/errors/errorsInfo.js')
 const errorsInfo = new ErrorsInfo()
 const { errorsCode } = require("../services/errors/errorsCode.js")
+const logger = require("../utils/logger.js");
 
 class ProductRepository {
     async addingProduct({ title, description, price, img, code, stock, category, thumbnails }) {
         try {
             if (!title || !description || !price || !code || !stock || !category) {
-                req.logger.warning('all fields are required')
+                logger.warning('all fields are required')
                 return
             }
 
             const existProduct = await ProductModel.findOne({ code: code })
 
             if (existProduct) {
-                console.log("product code must be unique. addingProduct . product.repository") // tira este error al agregar un producto al REALTIME
+                logger.warning("product code must be unique. addingProduct . product.repository")
                 return
             }
 
@@ -34,7 +35,7 @@ class ProductRepository {
             return newProduct
 
         } catch (error) {
-            req.logger.error('error addingProduct')
+            logger.error('error addingProduct')
         }
     }
 
@@ -77,7 +78,7 @@ class ProductRepository {
                 nextLink: hasNextPage ? `/api/products?limit=${limit}&page=${page + 1}&sort=${sort}&query=${query}` : null,
             }
         } catch (error) {
-            req.logger.error('error gettingProduct')
+            logger.error('error gettingProduct')
         }
     }
 

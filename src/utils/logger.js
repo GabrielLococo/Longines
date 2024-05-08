@@ -56,10 +56,4 @@ const logger = node_env === 'produccion' ? loggerProd : loggerDev
 
 //middleware
 
-const addLogger = (req,res,next) => {
-    req.logger = logger
-    req.logger.http(`${req.method} en ${req.url} - ${new Date().toLocaleDateString()}`)
-    next()
-}
-
-module.exports = addLogger
+module.exports = logger

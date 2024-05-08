@@ -9,6 +9,7 @@ const path = require('path')
 const PORT = 8080
 require("./database.js")
 const FakerController = require('./controllers/faker.controller.js')
+const logger = require("./utils/logger.js");
 //--------------------------------------------------experimento handlebars error
 const hbs = exphbs.create({
     runtimeOptions: {
@@ -22,7 +23,7 @@ const cartsRouter = require("./routes/carts.router.js")
 const viewsRouter = require("./routes/views.router.js")
 const userRouter = require("./routes/user.router.js")
 //logger
-const addLogger = require('./utils/logger.js')
+const addLogger = require('./middleware/logger-middleware.js')
 //handleError
 const handleError = require('./middleware/handleError.js')
 
@@ -59,11 +60,11 @@ app.use("/", viewsRouter)
 
 //rutas de logger test
 app.get('/loggertest',(req, res) =>{
-    req.logger.error('error message')
-    req.logger.debug('debug message')
-    req.logger.info('info message')
-    req.logger.warning('warning message')
-    res.send('logs test')
+    logger.error('error message')
+    logger.debug('debug message')
+    logger.info('info message')
+    logger.warning('warning message')
+    send('logs test')
 })
 
 //mocking faker
@@ -71,7 +72,7 @@ const fakerController = new FakerController()
 app.use('/mockingproducts', require('./routes/faker.router.js')(fakerController))
 
 const httpServer = app.listen(PORT, () => {
-    console.log(`SV listening http://localhost:${PORT}`)
+    logger.info(`SV listening http://localhost:${PORT}`)
 })
 
 const SocketManager = require("./sockets/socketmanager.js")

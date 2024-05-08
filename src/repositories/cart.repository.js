@@ -1,4 +1,5 @@
 const CartModel = require("../models/cart.model.js")
+const logger = require("../utils/logger.js");
 
 class CartRepository {
     async createCart() {
@@ -7,7 +8,7 @@ class CartRepository {
             await newCart.save()
             return newCart
         } catch (error) {
-            req.logger.error("Error createCart")
+            logger.error("Error createCart")
         }
     }
     
@@ -20,17 +21,17 @@ class CartRepository {
             }
             return cart
         } catch (error) {
-            req.logger.error("Error getting cart cart.repository")
+            logger.error("Error getting cart cart.repository")
         }
     }
 
     async addProductToCart(cartId, productId, quantity = 1) {
         try {
             const cart = await this.getCartById(cartId) 
-            const existeProducto = cart.products.find(item => item.product._id.toString() === productId)
+            const existProduct = cart.products.find(item => item.product._id.toString() === productId)
 
-            if (existeProducto) {
-                existeProducto.quantity += quantity
+            if (existProduct) {
+                existProduct.quantity += quantity
             } else {
                 cart.products.push({ product: productId, quantity })
             }
@@ -38,7 +39,7 @@ class CartRepository {
             await cart.save()
             return cart
         } catch (error) {
-            req.logger.error("Error addProductToCart")
+            logger.error("Error addProductToCart")
         }
     }
 
@@ -46,13 +47,13 @@ class CartRepository {
         try {
             const cart = await CartModel.findById(cartId)
             if (!cart) {
-                req.logger.error('Cart not found')
+                logger.error('Cart not found')
             }
             cart.products = cart.products.filter(item => item.product._id.toString() !== productId)
             await cart.save()
             return cart
         } catch (error) {
-            req.logger.error("Error deleting product . deletingProduct")
+            logger.error("Error deleting product . deletingProduct")
         }
     }
 
@@ -61,7 +62,7 @@ class CartRepository {
             const cart = await CartModel.findById(cartId)
 
             if (!cart) {
-                req.logger.error('Cart not found')
+                logger.error('Cart not found')
             }
 
             cart.products = updatedProducts
@@ -70,7 +71,7 @@ class CartRepository {
             await cart.save()
             return cart
         } catch (error) {
-            req.logger.error("Error updating products on cart ")
+            logger.error("Error updating products on cart ")
         }
     }
 
@@ -79,7 +80,7 @@ class CartRepository {
             const cart = await CartModel.findById(cartId)
 
             if (!cart) {
-                req.logger.error('Cart not found updateAmountOnCart')
+                logger.error('Cart not found updateAmountOnCart')
             }
             
             
@@ -94,11 +95,11 @@ class CartRepository {
                 await cart.save()
                 return cart
             } else {
-                req.logger.error('Product not found in cart  updateAmountOnCart')
+                logger.error('Product not found in cart  updateAmountOnCart')
             }
 
         } catch (error) {
-            req.logger.error("Error updating quantity  updateAmountOnCart")
+            logger.error("Error updating quantity  updateAmountOnCart")
         }
     }
 
@@ -111,13 +112,13 @@ class CartRepository {
             )
 
             if (!cart) {
-                req.logger.error('Cart not found emptyCart')
+                logger.error('Cart not found emptyCart')
             }
 
             return cart
 
         } catch (error) {
-            req.logger.error("Error emptyCart")
+            logger.error("Error emptyCart")
         }
     }
 }

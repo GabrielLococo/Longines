@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const { createHash, isValidPassword } = require("../utils/hashbcryp.js")
 const UserDTO = require("../dto/user.dto.js")
 const generateProducts = require('../utils/faker.js')
+const logger = require("../utils/logger.js")
 
 
 
@@ -13,7 +14,7 @@ class UserController {
         try {
             const existUser = await UserModel.findOne({ email })
             if (existUser) {
-                return req.logger.warning('user already exist'),
+                return logger.warning('user already exist'),
                 res.status(400).send("user already exist")
             }
 
@@ -40,10 +41,10 @@ class UserController {
                 httpOnly: true
             })
 
-            req.logger.info('user register ok')
+            logger.info('user register ok')
             res.redirect("/api/users/profile")
         } catch (error) {
-            req.logger.error('server error register')
+            logger.error('server error register', error)
             res.status(500).send("server error register")
         }
     }
@@ -70,11 +71,10 @@ class UserController {
                 maxAge: 3600000,
                 httpOnly: true
             })
-            req.logger.info('user login ok')
+            logger.info('user login ok')
             res.redirect("/api/users/profile")
         } catch (error) {
-            console.error(error)
-            req.logger.error('server error login')
+            logger.error('server error login', error)
             res.status(500).send("server error login")
         }
     }
@@ -86,7 +86,7 @@ class UserController {
     }
 
     async logout(req, res) {
-        req.logger.info('logout ok')
+        logger.info('logout ok')
         res.clearCookie("lococotokencookie")
         res.redirect("/login")
     }
@@ -94,9 +94,9 @@ class UserController {
     async admin(req, res) {
         if (req.user.user.role !== "admin") {
             return res.status(403).send("access not alowed. only for admins."),
-            req.logger.warning('access not alowed. only for admins.')
+            logger.warning('access not alowed. only for admins.')
         }
-        req.logger.info('user admin login ok')
+        logger.info('user admin login ok')
         res.render("admin")
     }
 

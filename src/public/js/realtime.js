@@ -1,4 +1,5 @@
 const socket = io()
+const logger = require("../utils/logger.js")
 
 socket.on("products", (data) => {
     renderProducts(data)
@@ -7,7 +8,7 @@ socket.on("products", (data) => {
 const renderProducts = (products) => {
     const conteinerProducts = document.getElementById("conteinerProducts")
     if (!conteinerProducts) {
-        console.error("id not found .renderProducts. 'conteinerProducts'")
+        logger.error("id not found .renderProducts. 'conteinerProducts'")
         return
     }
 

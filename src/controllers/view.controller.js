@@ -3,9 +3,10 @@ const CartRepository = require("../repositories/cart.repository.js")
 const cartRepository = new CartRepository()
 const ProductRepository = require("../repositories/product.repository.js")
 const productRepository = new ProductRepository()
-const TicketRepository= require("../repositories/ticket.repository.js");
-const ticketRepository = new TicketRepository();
-const UserModel = require("../models/user.model.js");
+const TicketRepository= require("../repositories/ticket.repository.js")
+const ticketRepository = new TicketRepository()
+const UserModel = require("../models/user.model.js")
+const logger = require("../utils/logger.js")
 
 
 class ViewsController {
@@ -42,7 +43,7 @@ class ViewsController {
                 cartId
             })
         } catch (error) {
-            req.logger.error("error getting products renderProducts", error)
+            logger.error("error getting products renderProducts", error)
             res.status(500).json({
                 status: 'error',
                 error: "server error renderProducts"
@@ -56,7 +57,7 @@ class ViewsController {
             const carrito = await cartRepository.getCartById(cartId)
 
             if (!carrito) {
-                req.logger.warning("that cart ID doesn't exist")
+                logger.warning("that cart ID doesn't exist")
                 return res.status(404).json({ error: "cart not find. renderCart" })
             }
 
@@ -79,7 +80,7 @@ class ViewsController {
 
             res.render("carts", { products: productsInCart, totalBuy, cartId })
         } catch (error) {
-            req.logger.error("Error getting cart renderCart", error)
+            logger.error("Error getting cart renderCart", error)
             res.status(500).json({ error: "server error renderCart" })
         }
     }
@@ -96,7 +97,7 @@ class ViewsController {
         try {
             res.render("realtimeproducts")
         } catch (error) {
-            req.logger.error("error on RTproducts view", error)
+            logger.error("error on RTproducts view", error)
             res.status(500).json({ error: "server error renderRealTimeProducts" })
         }
     }
@@ -111,9 +112,9 @@ class ViewsController {
 
     async renderPurchase(req, res) {
         try {
-          console.log('>>>  RENDER PURCHASE TICKETBUY')
-          console.log('>>>  req.params.cid:' + req.params.cid)
-          console.log('>>>  req.params.tid:' + req.params.tid)
+          logger.info('>>>  RENDER PURCHASE TICKETBUY')
+          logger.info('>>>  req.params.cid:' + req.params.cid)
+          logger.info('>>>  req.params.tid:' + req.params.tid)
           const cart = await cartRepository.getCartById(req.params.cid)
           const ticket = await ticketRepository.getTicketById(req.params.tid)
           const purchaser = await UserModel.findById(ticket.purchaser)
@@ -124,7 +125,7 @@ class ViewsController {
           const hasTicket = true
     
           if (!req.params.tid) {
-            req.logger.error('ticket id is not defined')
+            logger.error('ticket id is not defined')
           }
     
           res.render('carts', {
@@ -137,7 +138,7 @@ class ViewsController {
             hasTicket,
           });
         } catch (error) {
-          req.logger.error('error trying to render buy :', error);
+          logger.error('error trying to render buy :', error);
           res.status(500).json({ error: 'server error renderPurchase' });
         }
       }

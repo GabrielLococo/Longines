@@ -11,7 +11,7 @@ class SocketManager {
 
     async initSocketEvents() {
         this.io.on("connection", async (socket) => {
-            req.logger.info("Un cliente se conectó")
+            logger.info("Un cliente se conectó")  // no se como agregar el logger sin que tire error, no reconoce la variable "logger"
             
             socket.emit("products", await productRepository.gettingProduct() )
 
