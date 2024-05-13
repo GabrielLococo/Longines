@@ -155,10 +155,10 @@ class CartController {
                 cliente: userWithCart.first_name,
                 email: userWithCart.email,
                 numTicket: ticket._id 
-            });
+            })
 
             // res.status(200).json({ cartId: cart._id, ticketId: ticket._id })
-            
+
         } catch (error) {
             logger.error('server error. Error procesing buy:', error)
             res.status(500).json({ error: 'server error endBuy' })

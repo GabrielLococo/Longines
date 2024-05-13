@@ -8,7 +8,7 @@ class EmailManager {
             port: 587,
             auth: {
                 user: "gabriellococosi@gmail.com",
-                pass: "norp renb afxw uxyq"
+                pass: "zcco jspu czui qoub"
             }
         })
     }
@@ -51,8 +51,8 @@ class EmailManager {
 
             await this.transporter.sendMail(mailOptions)
         } catch (error) {
-            logger.error("Error sending Email:", error)
-            throw new Error("Error sending Email")
+            logger.error("Error sending Email: sendEmailRestorePass ", error)
+            throw new Error("Error sending Email. sendEmailRestorePass")
         }
     }
 }

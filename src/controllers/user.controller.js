@@ -95,7 +95,7 @@ class UserController {
 
             res.render("profile", { user: userDto, isPremium, isAdmin });
         } catch (error) {
-            res.status(500).send('Error server', error);
+            res.status(500).send('Server error / profile', error);
         }
     }
 
@@ -121,7 +121,17 @@ class UserController {
     //     }
     //     res.json(fakerProducts)
     // }
+    
 
+
+    //************************************************************************* */
+    //************************************************************************* */
+    //************************************************************************* */
+    //************************************************************************* */
+    //************************************************************************* */
+    //************************************************************************* */
+    //************************************************************************* */
+    //PROBLEMAS ACÁ
     async requestPasswordReset(req, res) {
         const { email } = req.body
 
@@ -139,12 +149,12 @@ class UserController {
             await user.save()
 
             //email whit emailservice
-            await emailManager.sendEmailRestorePass(email, user.first_name, token)
+            await emailManager.sendEmailRestorePass(email, user.first_name, token)   
 
             res.redirect("/restorePasswordOk")
         } catch (error) {
-            logger.error(error)
-            res.status(500).send("Error server")
+            logger.error(error, 'error  requestPasswordReset / user.controller.js')
+            res.status(500).send("Server error /userController.js")
         }
     }
 
@@ -191,7 +201,7 @@ class UserController {
             const { uid } = req.params
             const user = await UserModel.findById(uid)
             if (!user) {
-                return res.status(404).json({ message: 'Usuario no encontrado' })
+                return res.status(404).json({ message: 'user not found' })
             }
     
             const newRol = user.role === 'user' ? 'premium' : 'user'

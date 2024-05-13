@@ -14,10 +14,10 @@ router.get("/chat", checkUserRole(['usuario']) ,viewsController.renderChat)
 router.get("/", viewsController.renderHome)
 router.get("/endBuy/:cid/ticket/:tid", viewsController.renderPurchase)
 //last routes
-router.get("/reset-password", viewsController.renderResetPassword);
-router.get("/password", viewsController.renderChangePassword);
-router.get("/restorePasswordOk", viewsController.renderRestorePassOk);
-router.get("/panel-premium", viewsController.renderPremium);
+router.get("/reset-password", viewsController.renderResetPassword)
+router.get("/password", viewsController.renderChangePassword)
+router.get("/restorePasswordOk", viewsController.renderRestorePassOk)
+router.get("/panel-premium", viewsController.renderPremium)
 
 
 module.exports = router;
