@@ -5,7 +5,9 @@ const { createHash, isValidPassword } = require("../utils/hashbcryp.js")
 const UserDTO = require("../dto/user.dto.js")
 const generateProducts = require('../utils/faker.js')
 const logger = require("../utils/logger.js")
-
+const { generateResetToken } = require("../utils/tokenreset.js")
+const EmailManager = require("../services/email.js");
+const emailManager = new EmailManager();
 
 
 class UserController {
@@ -79,10 +81,22 @@ class UserController {
         }
     }
 
+    // async profile(req, res) {
+    //     const userDto = new UserDTO(req.user.first_name, req.user.last_name, req.user.role)
+    //     const isAdmin = req.user.role === 'admin'
+    //     res.render("profile", { user: userDto, isAdmin })
+    // }
+    
     async profile(req, res) {
-        const userDto = new UserDTO(req.user.first_name, req.user.last_name, req.user.role)
-        const isAdmin = req.user.role === 'admin'
-        res.render("profile", { user: userDto, isAdmin })
+        try {
+            const isPremium = req.user.role === 'premium';
+            const userDto = new UserDTO(req.user.first_name, req.user.last_name, req.user.role);
+            const isAdmin = req.user.role === 'admin';
+
+            res.render("profile", { user: userDto, isPremium, isAdmin });
+        } catch (error) {
+            res.status(500).send('Error server', error);
+        }
     }
 
     async logout(req, res) {
@@ -107,6 +121,89 @@ class UserController {
     //     }
     //     res.json(fakerProducts)
     // }
+
+    async requestPasswordReset(req, res) {
+        const { email } = req.body
+
+        try {
+            const user = await UserModel.findOne({ email })
+            if (!user) {
+                return res.status(404).send("User not found")
+            }
+
+            const token = generateResetToken();
+            user.resetToken = {
+                token: token,
+                expiresAt: new Date(Date.now() + 3600000) // last 1 hs 
+            }
+            await user.save()
+
+            //email whit emailservice
+            await emailManager.sendEmailRestorePass(email, user.first_name, token)
+
+            res.redirect("/restorePasswordOk")
+        } catch (error) {
+            logger.error(error)
+            res.status(500).send("Error server")
+        }
+    }
+
+    async resetPassword(req, res) {
+        const { email, password, token } = req.body
+        try {
+            const user = await UserModel.findOne({ email })
+            if (!user) {
+                return res.render("changePassword", { error: "User not found" })
+            }
+
+            //Get the user's password reset token
+            const resetToken = user.resetToken
+            if (!resetToken || resetToken.token !== token) {
+                return res.render("passwordreset", { error: "Password reset token is invalid" })
+            }
+
+            // Check if the token has expired
+            const now = new Date()
+            if (now > resetToken.expiresAt) {
+                return res.redirect("/changePassword");
+            }
+
+            //Check if the new password is the same as the previous one
+            if (isValidPassword(password, user)) {
+                return res.render("changePassword", { error: "The new password cannot be the same as the previous one" })
+            }
+
+            // Update user password
+            user.password = createHash(password)
+            user.resetToken = undefined // Mark the token as used
+            await user.save()
+
+            // Render password change confirmation view
+            return res.redirect("/login")
+        } catch (error) {
+            logger.error(error)
+            return res.status(500).render("passwordreset", { error: "Server error" })
+        }
+    }
+
+    async changeRolPremium(req, res) {
+        try {
+            const { uid } = req.params
+            const user = await UserModel.findById(uid)
+            if (!user) {
+                return res.status(404).json({ message: 'Usuario no encontrado' })
+            }
+    
+            const newRol = user.role === 'user' ? 'premium' : 'user'
+    
+            const refreshed = await UserModel.findByIdAndUpdate(uid, { role: newRol }, { new: true })
+            res.json(refreshed)
+            
+        } catch (error) {
+            logger.error(error)
+            res.status(500).json({ message: 'Server Error' })
+        }
+    }
 }
 
 module.exports = UserController

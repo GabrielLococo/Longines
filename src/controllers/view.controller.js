@@ -138,10 +138,27 @@ class ViewsController {
             hasTicket,
           });
         } catch (error) {
-          logger.error('error trying to render buy :', error);
-          res.status(500).json({ error: 'server error renderPurchase' });
+          logger.error('error trying to render buy :', error)
+          res.status(500).json({ error: 'server error renderPurchase' })
         }
       }
+
+
+    async renderResetPassword(req, res) {
+        res.render("passwordreset")
+    }
+
+    async renderChangePassword(req, res) {
+        res.render("changePassword")
+    }
+
+    async renderRestorePassOk(req, res) {
+        res.render("restorePasswordOk")
+    }
+
+    async renderPremium(req, res) {
+        res.render("panel-premium")
+    }
 }
 
 module.exports = ViewsController

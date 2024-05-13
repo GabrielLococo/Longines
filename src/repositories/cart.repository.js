@@ -8,7 +8,7 @@ class CartRepository {
             await newCart.save()
             return newCart
         } catch (error) {
-            logger.error("Error createCart")
+            logger.error("Error createCart" , error)
         }
     }
     
@@ -21,7 +21,7 @@ class CartRepository {
             }
             return cart
         } catch (error) {
-            logger.error("Error getting cart cart.repository")
+            logger.error("Error getting cart cart.repository" , error)
         }
     }
 
@@ -39,7 +39,7 @@ class CartRepository {
             await cart.save()
             return cart
         } catch (error) {
-            logger.error("Error addProductToCart")
+            logger.error("Error addProductToCart" , error)
         }
     }
 
@@ -53,7 +53,7 @@ class CartRepository {
             await cart.save()
             return cart
         } catch (error) {
-            logger.error("Error deleting product . deletingProduct")
+            logger.error("Error deleting product . deletingProduct" , error)
         }
     }
 
@@ -71,7 +71,7 @@ class CartRepository {
             await cart.save()
             return cart
         } catch (error) {
-            logger.error("Error updating products on cart ")
+            logger.error("Error updating products on cart " , error)
         }
     }
 
@@ -99,7 +99,7 @@ class CartRepository {
             }
 
         } catch (error) {
-            logger.error("Error updating quantity  updateAmountOnCart")
+            logger.error("Error updating quantity  updateAmountOnCart", error)
         }
     }
 
@@ -118,7 +118,7 @@ class CartRepository {
             return cart
 
         } catch (error) {
-            logger.error("Error emptyCart")
+            logger.error("Error emptyCart",error)
         }
     }
 }

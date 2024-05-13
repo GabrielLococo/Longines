@@ -6,6 +6,8 @@ const ProductRepository = require("../repositories/product.repository.js")
 const productRepository = new ProductRepository()
 const { generateUniqueCode, calculateTotal } = require("../utils/cartutils.js")
 const logger = require("../utils/logger.js")
+const EmailManager = require("../services/email.js");
+const emailManager = new EmailManager();
 
 
 
@@ -147,8 +149,16 @@ class CartController {
             cart.products = cart.products.filter(item => ProductsNotAvailable.some(productId => productId.equals(item.product)))
             await cart.save()
 
-            // res.status(200).json({ ProductsNotAvailable })
-            res.status(200).json({ cartId: cart._id, ticketId: ticket._id })
+            await emailManager.sendEmailBuy(userWithCart.email, userWithCart.first_name, ticket._id)
+
+            res.render("checkout", {
+                cliente: userWithCart.first_name,
+                email: userWithCart.email,
+                numTicket: ticket._id 
+            });
+
+            // res.status(200).json({ cartId: cart._id, ticketId: ticket._id })
+            
         } catch (error) {
             logger.error('server error. Error procesing buy:', error)
             res.status(500).json({ error: 'server error endBuy' })

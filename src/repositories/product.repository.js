@@ -3,7 +3,7 @@ const CustomError = require('../services/errors/customError.js')
 const ErrorsInfo = require('../services/errors/errorsInfo.js')
 const errorsInfo = new ErrorsInfo()
 const { errorsCode } = require("../services/errors/errorsCode.js")
-const logger = require("../utils/logger.js");
+const logger = require("../utils/logger.js")
 
 class ProductRepository {
     async addingProduct({ title, description, price, img, code, stock, category, thumbnails }) {
