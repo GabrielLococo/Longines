@@ -28,7 +28,7 @@ class EmailManager {
 
             await this.transporter.sendMail(mailOptions)
         } catch (error) {
-            logger.error('Error sending email', error)
+            logger.error('Error sending email //sendEmailBuy . services/email.js', error) // error finalizacion de compra
         }
     }
 
