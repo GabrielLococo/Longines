@@ -42,8 +42,17 @@ class CartController {
         const cartId = req.params.cid
         const productId = req.params.pid
         const quantity = req.body.quantity || 1
+        const userId = req.user._id
         
         try {
+            const user = await UserModel.findById(userId)
+            if (user.role === 'premium') { 
+                const product = await productRepository.gettingProdById(productId)
+                if (product.owner === user.email)  {
+                    return res.status(403).json({ error: "You cannot add a product that you created yourself" })
+                }
+            }
+
             await cartRepository.addProductToCart(cartId, productId, quantity)
             const carritoID = (req.user.cart).toString()
 

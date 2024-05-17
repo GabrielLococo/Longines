@@ -6,7 +6,7 @@ const { errorsCode } = require("../services/errors/errorsCode.js")
 const logger = require("../utils/logger.js")
 
 class ProductRepository {
-    async addingProduct({ title, description, price, img, code, stock, category, thumbnails }) {
+    async addingProduct({ title, description, price, img, code, stock, category, thumbnails, owner }) {
         try {
             if (!title || !description || !price || !code || !stock || !category) {
                 logger.warning('all fields are required')
@@ -29,13 +29,14 @@ class ProductRepository {
                 stock,
                 category,
                 status: true,
-                thumbnails: thumbnails || []
+                thumbnails: thumbnails || [],
+                owner
             })
             await newProduct.save()
             return newProduct
 
         } catch (error) {
-            logger.error('error addingProduct')
+            logger.error('error addingProduct', error)
         }
     }
 

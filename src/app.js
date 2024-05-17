@@ -10,30 +10,32 @@ const PORT = 8080
 require("./database.js")
 const FakerController = require('./controllers/faker.controller.js')
 const logger = require("./utils/logger.js");
-//--------------------------------------------------experimento handlebars error
+const productsRouter = require("./routes/products.router.js")
+const cartsRouter = require("./routes/carts.router.js")
+const viewsRouter = require("./routes/views.router.js")
+const userRouter = require("./routes/user.router.js")
+
+//logger
+const addLogger = require('./middleware/logger-middleware.js')
+
+//handleError
+const handleError = require('./middleware/handleError.js')
+
+//MIDDLEWARES
 const hbs = exphbs.create({
     runtimeOptions: {
         allowProtoPropertiesByDefault: true,
         allowProtoMethodsByDefault: true,
     },
 })
-//--------------------------------------------------
-const productsRouter = require("./routes/products.router.js")
-const cartsRouter = require("./routes/carts.router.js")
-const viewsRouter = require("./routes/views.router.js")
-const userRouter = require("./routes/user.router.js")
-//logger
-const addLogger = require('./middleware/logger-middleware.js')
-//handleError
-const handleError = require('./middleware/handleError.js')
-
-//MIDDLEWARES
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(cors())
+
 //logger middleware
 app.use(addLogger)
+
 //handleError middleware
 app.use(handleError)
 
@@ -50,7 +52,6 @@ app.use(authMiddleware)
 app.engine("handlebars", hbs.engine)  //-- ***  ",exphbs.engine() "  asi estaba antes.  
 app.set("view engine", "handlebars")
 app.set("views", "./src/views")
-
 
 //ROUTES
 app.use("/api/products", productsRouter)
@@ -71,6 +72,26 @@ app.get('/loggertest',(req, res) =>{
 const fakerController = new FakerController()
 app.use('/mockingproducts', require('./routes/faker.router.js')(fakerController))
 
+//swagger
+const swaggerJSDoc = require('swagger-jsdoc')
+const swaggerUiExpress = require("swagger-ui-express")
+//swagger config
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.1",
+        info: {
+            title: "Longines",
+            description: "Longines e-commerce"
+        }
+    },
+    apis: ["./src/docs/**/*.yaml"]
+}
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+
+
+//server listener
 const httpServer = app.listen(PORT, () => {
     logger.info(`SV listening http://localhost:${PORT}`)
 })
