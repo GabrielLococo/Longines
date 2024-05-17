@@ -94,8 +94,9 @@ class ViewsController {
     }
 
     async renderRealTimeProducts(req, res) {
+        const user = req.user 
         try {
-            res.render("realtimeproducts")
+            res.render("realtimeproducts" , {role: user.role , email: user.email}) //handlebars props 
         } catch (error) {
             logger.error("error on RTproducts view", error)
             res.status(500).json({ error: "server error renderRealTimeProducts" })

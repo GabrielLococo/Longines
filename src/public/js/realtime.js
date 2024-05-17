@@ -40,6 +40,9 @@ document.getElementById("btnEnviar").addEventListener("click", () => {
 
 
 const addingProduct = () => {
+    const role = document.getElementById("role").textContent
+    const email = document.getElementById("email").textContent
+    const owner = role === "premium" ? email : "admin"
     const product = {
         title: document.getElementById("title").value,
         description: document.getElementById("description").value,
@@ -49,7 +52,8 @@ const addingProduct = () => {
         stock: document.getElementById("stock").value,
         category: document.getElementById("category").value,
         status: document.getElementById("status").value === "true",
-    };
+        owner
+    }
 
     socket.emit("addingProduct", product)
 }
