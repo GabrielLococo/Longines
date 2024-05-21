@@ -23,8 +23,14 @@ const renderProducts = (products) => {
                         `
 
         conteinerProducts.appendChild(card)
-        card.querySelector("button").addEventListener("click", ()=> {
-            deletingProduct(item._id)
+        card.querySelector("button").addEventListener("click", () => {
+            if (role === "premium" && item.owner === email) {
+                deletingProduct(item._id)
+            } else if (role === "admin") {
+                deletingProduct(item._id)
+            } else {
+                throw new Error("Error renderProducts realtime.js")
+            }
         })
     })
 }
