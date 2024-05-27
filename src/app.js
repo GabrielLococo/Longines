@@ -15,6 +15,9 @@ const cartsRouter = require("./routes/carts.router.js")
 const viewsRouter = require("./routes/views.router.js")
 const userRouter = require("./routes/user.router.js")
 
+//swagger
+const { swaggerUiExpress, specs } = require('./config/swagger.config.js')
+
 //logger
 const addLogger = require('./middleware/logger-middleware.js')
 
@@ -58,6 +61,8 @@ app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/api/users", userRouter)
 app.use("/", viewsRouter)
+//swagger
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs)) 
 
 //rutas de logger test
 app.get('/loggertest',(req, res) =>{
@@ -71,24 +76,6 @@ app.get('/loggertest',(req, res) =>{
 //mocking faker
 const fakerController = new FakerController()
 app.use('/mockingproducts', require('./routes/faker.router.js')(fakerController))
-
-//swagger
-const swaggerJSDoc = require('swagger-jsdoc')
-const swaggerUiExpress = require("swagger-ui-express")
-//swagger config
-const swaggerOptions = {
-    definition: {
-        openapi: "3.0.1",
-        info: {
-            title: "Longines",
-            description: "Longines e-commerce"
-        }
-    },
-    apis: ["./src/docs/**/*.yaml"]
-}
-
-const specs = swaggerJSDoc(swaggerOptions);
-app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 
 //server listener
