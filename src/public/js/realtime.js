@@ -1,4 +1,6 @@
 const socket = io()
+const role = document.getElementById("role").textContent
+const email = document.getElementById("email").textContent
 
 socket.on("products", (data) => {
     renderProducts(data)
@@ -29,7 +31,7 @@ const renderProducts = (products) => {
             } else if (role === "admin") {
                 deletingProduct(item._id)
             } else {
-                throw new Error("Error renderProducts realtime.js")
+                console.log("you are not allowed to eliminate that product")
             }
         })
     })
@@ -63,3 +65,4 @@ const addingProduct = () => {
 
     socket.emit("addingProduct", product)
 }
+

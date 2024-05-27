@@ -49,7 +49,7 @@ const authMiddleware = require("./middleware/authmiddleware.js")
 app.use(authMiddleware)
 
 //HANDLEBARS
-app.engine("handlebars", hbs.engine)  //-- ***  ",exphbs.engine() "  asi estaba antes.  
+app.engine("handlebars", hbs.engine) 
 app.set("view engine", "handlebars")
 app.set("views", "./src/views")
 
