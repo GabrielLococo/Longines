@@ -23,18 +23,18 @@ class CartController {
         }
     }
 
-    async getProductFromCart(req, res) {
+    async getProductsFromCart(req, res) {
         const carritoId = req.params.cid
         try {
-            const products = await cartRepository.getProductFromCart(carritoId)
+            const products = await cartRepository.getCartById(carritoId)
             if (!products) {
                 logger.warning('cart not found')
                 return res.status(404).json({ error: "cart not found" })
             }
             res.json(products)
         } catch (error) {
-            logger.error('server error getProductFromCart', error)
-            res.status(500).send("server error getProductFromCart ")
+            logger.error('server error getProductsFromCart', error)
+            res.status(500).send("server error getProductsFromCart ")
         }
     }
 
@@ -48,9 +48,17 @@ class CartController {
             const user = await UserModel.findById(userId)
             if (user.role === 'premium') { 
                 const product = await productRepository.gettingProdById(productId)
+                if (!product) {
+                    return res.status(404).json({ error: "Product not found" })
+                }
                 if (product.owner === user.email)  {
                     return res.status(403).json({ error: "You cannot add a product that you created yourself" })
                 }
+            }
+
+            const cart = await cartRepository.getCartById(cartId);
+                if (!cart) {
+                return res.status(404).json({ error: "Cart not found" });
             }
 
             await cartRepository.addProductToCart(cartId, productId, quantity)
@@ -166,7 +174,6 @@ class CartController {
                 numTicket: ticket._id 
             })
 
-            // res.status(200).json({ cartId: cart._id, ticketId: ticket._id })
 
         } catch (error) {
             logger.error('server error. Error procesing buy:', error)

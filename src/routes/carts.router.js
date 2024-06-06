@@ -7,7 +7,7 @@ const cartController = new CartController()
 router.use(authMiddleware)
 
 router.post("/", cartController.newCart)
-router.get("/:cid", cartController.getProductFromCart)
+router.get("/:cid", cartController.getProductsFromCart)
 router.post("/:cid/product/:pid", cartController.addProductToCart)
 router.delete('/:cid/product/:pid', cartController.deleteProductFromCart)
 router.put('/:cid', cartController.updateProductsOnCart)

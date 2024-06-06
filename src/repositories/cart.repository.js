@@ -83,8 +83,7 @@ class CartRepository {
                 logger.error('Cart not found updateAmountOnCart')
             }
             
-            
-            const productIndex = cart.products.findIndex(item => item._id.toString() === productId)
+            const productIndex = cart.products.findIndex(item => item.product.equals(productId))
         
             if (productIndex !== -1) {
                 cart.products[productIndex].quantity = newQuantity
