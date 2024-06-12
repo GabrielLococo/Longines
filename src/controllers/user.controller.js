@@ -80,12 +80,6 @@ class UserController {
             res.status(500).send("server error login")
         }
     }
-
-    // async profile(req, res) {
-    //     const userDto = new UserDTO(req.user.first_name, req.user.last_name, req.user.role)
-    //     const isAdmin = req.user.role === 'admin'
-    //     res.render("profile", { user: userDto, isAdmin })
-    // }
     
     async profile(req, res) {
         try {
@@ -114,24 +108,6 @@ class UserController {
         res.render("admin")
     }
 
-    // async generateProducts(req,res) {
-    //     const fakerProducts = []
-    //     for (let i = 0; i < 10; i++) {
-    //         fakerProducts.push(generateProducts())
-    //     }
-    //     res.json(fakerProducts)
-    // }
-    
-
-
-    //************************************************************************* */
-    //************************************************************************* */
-    //************************************************************************* */
-    //************************************************************************* */
-    //************************************************************************* */
-    //************************************************************************* */
-    //************************************************************************* */
-    //PROBLEMAS ACÁ
     async requestPasswordReset(req, res) {
         const { email } = req.body
 
@@ -203,7 +179,16 @@ class UserController {
             if (!user) {
                 return res.status(404).json({ message: 'user not found' })
             }
-    
+            
+            const requiredDocuments = ['Identificación', 'Comprobante de domicilio', 'Comprobante de estado de cuenta']
+            const userDocuments = user.documents.map(doc => doc.name)
+
+            const hasRequiredDocuments = requiredDocuments.every(doc => userDocuments.includes(doc))
+
+            if (!hasRequiredDocuments) {
+                return res.status(400).json({ message: 'El usuario debe cargar los siguientes documentos: Identificación, Comprobante de domicilio, Comprobante de estado de cuenta' })
+            }
+
             const newRol = user.role === 'user' ? 'premium' : 'user'
     
             const refreshed = await UserModel.findByIdAndUpdate(uid, { role: newRol }, { new: true })

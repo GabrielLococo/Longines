@@ -6,8 +6,8 @@ const ProductRepository = require("../repositories/product.repository.js")
 const productRepository = new ProductRepository()
 const { generateUniqueCode, calculateTotal } = require("../utils/cartutils.js")
 const logger = require("../utils/logger.js")
-const EmailManager = require("../services/email.js");
-const emailManager = new EmailManager();
+const EmailManager = require("../services/email.js")
+const emailManager = new EmailManager()
 
 
 
