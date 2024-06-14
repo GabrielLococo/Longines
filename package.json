@@ -1,11 +1,11 @@
 {
-  "name": "borrador--desa--3",
+  "name": "longines",
   "type": "commonjs",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/supertest.test.mjs",
     "dev": "nodemon src/app.js --mode development",
     "start": "node src/app.js --mode production"
   },
@@ -40,6 +40,9 @@
     "winston": "^3.13.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0",
+    "nodemon": "^3.0.2",
+    "supertest": "^7.0.0"
   }
 }

@@ -16,7 +16,7 @@ class CartController {
     async newCart(req, res) {
         try {
             const newCart = await cartRepository.createCart()
-            res.json(newCart);
+            res.status(200).json(newCart);
         } catch (error) {
             res.status(500).send("server error newCart")
             logger.error('server error newCart ', error)
@@ -31,7 +31,7 @@ class CartController {
                 logger.warning('cart not found')
                 return res.status(404).json({ error: "cart not found" })
             }
-            res.json(products)
+            res.status(200).json(products)
         } catch (error) {
             logger.error('server error getProductsFromCart', error)
             res.status(500).send("server error getProductsFromCart ")
@@ -76,7 +76,7 @@ class CartController {
         const productId = req.params.pid
         try {
             const updatedCart = await cartRepository.deletingProduct(cartId, productId)
-            res.json({
+            res.status(200).json({
                 status: 'success',
                 message: 'deleteProductFromCart success ok',
                 updatedCart,
@@ -92,7 +92,7 @@ class CartController {
         const updatedProducts = req.body
         try {
             const updatedCart = await cartRepository.updateProductsOnCart(cartId, updatedProducts)
-            res.json(updatedCart)
+            res.status(200).json(updatedCart)
         } catch (error) {
             res.status(500).send("server error updateProductsOnCart")
             logger.error('server error updateProductsOnCart', error)
@@ -106,14 +106,14 @@ class CartController {
         try {
             const updatedCart = await cartRepository.updateAmountOnCart(cartId, productId, newQuantity)
 
-            res.json({
+            res.status(200).json({
                 status: 'success',
                 message: 'quantity product update ok ',
                 updatedCart,
             });
 
         } catch (error) {
-            res.status(500).send("server error updateAmount ")
+            res.status(500).send("server error updateAmount ",error)
         }
     }
 
@@ -122,7 +122,7 @@ class CartController {
         try {
             const updatedCart = await cartRepository.emptyCart(cartId)
 
-            res.json({
+            res.status(200).json({
                 status: 'success',
                 message: 'detele products from cart success ok',
                 updatedCart,
