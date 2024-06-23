@@ -8,10 +8,10 @@ const logger = require("../utils/logger.js")
 const { generateResetToken } = require("../utils/tokenreset.js")
 const EmailManager = require("../services/email.js")
 const emailManager = new EmailManager()
-const ViewsController = require("../controllers/view.controller.js");
-const viewsController = new ViewsController();
+const ViewsController = require("../controllers/view.controller.js")
+const viewsController = new ViewsController()
 
-s
+
 class UserController {
     async register(req, res) {
         const { first_name, last_name, email, password, age } = req.body
