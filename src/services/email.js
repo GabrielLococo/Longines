@@ -55,6 +55,27 @@ class EmailManager {
             throw new Error("Error sending Email. sendEmailRestorePass")
         }
     }
+
+    async sendNotificationEmail(email, first_name, subject, message) {
+        try {
+            const mailOptions = {
+                from: 'wiperalta@gmail.com',
+                to: email,
+                subject: subject,
+                html: `
+                    <h1>${subject}</h1>
+                    <p>Hi ${first_name},</p>
+                    <p>${message}</p>
+                    <p>Have a nice day!</p>
+                `
+            }
+
+            await this.transporter.sendMail(mailOptions)
+        } catch (error) {
+            logger.error("Error sending email: ", error)
+            throw new Error("Error sending email")
+        }
+    }
 }
 
 module.exports = EmailManager

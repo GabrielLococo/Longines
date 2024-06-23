@@ -2,7 +2,9 @@ const socket = require("socket.io")
 const ProductRepository = require("../repositories/product.repository.js")
 const productRepository = new ProductRepository()
 const MessageModel = require("../models/message.model.js")
-const logger = require("../utils/logger.js");
+const logger = require("../utils/logger.js")
+const UserController = require("../controllers/user.controller.js")
+const userController = new UserController()
 
 class SocketManager {
     constructor(httpServer) {
@@ -36,6 +38,9 @@ class SocketManager {
 
     async emitUpdatedProducts(socket) {
         socket.emit("products", await productRepository.gettingProduct())
+    }
+    async emitUpdateUsers(socket) {
+        socket.emit("users", await userController.getUsers)
     }
 }
 

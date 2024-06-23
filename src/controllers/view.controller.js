@@ -7,6 +7,7 @@ const TicketRepository= require("../repositories/ticket.repository.js")
 const ticketRepository = new TicketRepository()
 const UserModel = require("../models/user.model.js")
 const logger = require("../utils/logger.js")
+const UserDTO = require("../dto/user.dto.js")
 
 
 class ViewsController {
@@ -159,6 +160,47 @@ class ViewsController {
 
     async renderPremium(req, res) {
         res.render("panel-premium")
+    }
+
+    async renderUsers(req, res) {
+        try {
+            const limit = parseInt(req.query.limit) || 10
+            const page = parseInt(req.query.page) || 1
+            const loggedInUserId = req.user._id
+            const role = req.user.role
+
+            const totalUsers = await UserModel.countDocuments({ _id: { $ne: loggedInUserId } })
+
+            const skipCount = (page - 1) * limit;
+            let criteria = [
+                { $match: { _id: { $ne: loggedInUserId } } },
+                { $skip: skipCount },
+                { $limit: limit },
+            ];
+
+            const users = await UserModel.aggregate(criteria)
+            const usersDto = users.map(user => new UserDTO(user.first_name, user.last_name, user.email, user.role, user.last_connection))
+
+            const totalPages = Math.ceil(totalUsers / limit)
+            const hasNextPage = page < totalPages
+            const hasPrevPage = page > 1
+
+            res.render("users", {
+                users: usersDto,
+                totalPages,
+                prevPage: hasPrevPage ? page - 1 : null,
+                nextPage: hasNextPage ? page + 1 : null,
+                currentPage: page,
+                hasPrevPage,
+                hasNextPage,
+                docs: usersDto,
+                role:  req.user ? req.user.role : null,
+            })
+
+        } catch (error) {
+            logger.error("Error getting users", error)
+            res.status(500).json({ error: "Server Error" })
+        }
     }
 }
 

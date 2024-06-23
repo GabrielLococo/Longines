@@ -6,10 +6,12 @@ const UserDTO = require("../dto/user.dto.js")
 const generateProducts = require('../utils/faker.js')
 const logger = require("../utils/logger.js")
 const { generateResetToken } = require("../utils/tokenreset.js")
-const EmailManager = require("../services/email.js");
-const emailManager = new EmailManager();
+const EmailManager = require("../services/email.js")
+const emailManager = new EmailManager()
+const ViewsController = require("../controllers/view.controller.js");
+const viewsController = new ViewsController();
 
-
+s
 class UserController {
     async register(req, res) {
         const { first_name, last_name, email, password, age } = req.body
@@ -181,7 +183,7 @@ class UserController {
             }
             
             const requiredDocuments = ['Identificación', 'Comprobante de domicilio', 'Comprobante de estado de cuenta']
-            const userDocuments = user.documents.map(doc => doc.name)
+            const userDocuments = user.documents ? user.documents.map(doc => doc.name.split('.')[0]) : []
 
             const hasRequiredDocuments = requiredDocuments.every(doc => userDocuments.includes(doc))
 
@@ -194,6 +196,67 @@ class UserController {
             const refreshed = await UserModel.findByIdAndUpdate(uid, { role: newRol }, { new: true })
             res.json(refreshed)
             
+        } catch (error) {
+            logger.error(error)
+            res.status(500).json({ message: 'Server Error' })
+        }
+    }
+
+    async getUsers(req, res) {
+        try {
+            const users = await UserModel.find().sort({ last_connection: 1 })
+            
+            const usersDto = users.map(user => new UserDTO(user.first_name, user.last_name, user.email, user.role, user.last_connection))
+            
+            res.status(200).json({ status: "Success", users: usersDto })
+
+        } catch (error) {
+            logger.error(error);
+            return res.json({ message: 'Server Error' })
+        }
+    }
+
+    async deleteOldUsers(req, res) {
+        try {
+            const twoDaysAgo = new Date(Date.now() - 2 * 86400000)
+    
+            const inactiveUsers = await UserModel.find({
+                $or: [
+                    { last_connection: { $lt: twoDaysAgo } },
+                    { last_connection: { $exists: false } }
+                ]
+            });
+
+            for (const user of inactiveUsers) {
+                await emailManager.sendNotificationEmail(user.email, user.first_name, "Deletion due to inactivity", "Your account has been deleted due to inactivity")
+            }
+    
+            await UserModel.deleteMany({
+                $or: [
+                    { last_connection: { $lt: twoDaysAgo } },
+                    { last_connection: { $exists: false } }
+                ]
+            })
+    
+            viewsController.renderUsers(req, res)
+    
+        } catch (error) {
+            logger.error(error)
+            res.status(500).json({ message: 'Server Error' })
+        }
+    }
+
+    async deleteUser(req, res) {
+        try {
+            const { uid } = req.params;
+            const user = await UserModel.findById(uid)
+    
+            if (user) {
+                await emailManager.sendNotificationEmail(user.email, user.first_name, "delete account", "Your account has been deleted because it does not meet the store's requirements")
+                await UserModel.findByIdAndDelete(uid)
+            }
+    
+            viewsController.renderUsers(req, res)
         } catch (error) {
             logger.error(error)
             res.status(500).json({ message: 'Server Error' })
