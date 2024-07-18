@@ -18,8 +18,8 @@ class UserController {
         try {
             const existUser = await UserModel.findOne({ email })
             if (existUser) {
-                return logger.warning('user already exist'),
-                res.status(400).send("user already exist")
+                logger.warning('user already exist')
+                return res.status(400).send("user already exist")
             }
 
             const newCart = new CartModel()
@@ -48,7 +48,7 @@ class UserController {
             logger.info('user register ok')
             res.redirect("/api/users/profile")
         } catch (error) {
-            logger.error('server error register', error)
+            logger.error('server error register:', error)
             res.status(500).send("server error register")
         }
     }
@@ -85,13 +85,21 @@ class UserController {
     
     async profile(req, res) {
         try {
+            // Para verificar el contenido de req.user
+            console.log(req.user) 
+            if (!req.user) {
+            return res.status(401).send("User not authenticated")
+            }
+            //
+
             const isPremium = req.user.role === 'premium';
             const userDto = new UserDTO(req.user.first_name, req.user.last_name, req.user.role);
             const isAdmin = req.user.role === 'admin';
 
             res.render("profile", { user: userDto, isPremium, isAdmin });
         } catch (error) {
-            res.status(500).send('Server error / profile', error);
+            res.status(500).send('Server error / profile')
+            console.log('hay un errror acaaaa')
         }
     }
 
@@ -103,8 +111,8 @@ class UserController {
 
     async admin(req, res) {
         if (req.user.user.role !== "admin") {
-            return res.status(403).send("access not alowed. only for admins."),
             logger.warning('access not alowed. only for admins.')
+            return res.status(403).send("access not alowed. only for admins.")
         }
         logger.info('user admin login ok')
         res.render("admin")
@@ -131,7 +139,7 @@ class UserController {
 
             res.redirect("/restorePasswordOk")
         } catch (error) {
-            logger.error(error, 'error  requestPasswordReset / user.controller.js')
+            logger.error('error requestPasswordReset / user.controller.js:', error)
             res.status(500).send("Server error /userController.js")
         }
     }
@@ -169,7 +177,7 @@ class UserController {
             // Render password change confirmation view
             return res.redirect("/login")
         } catch (error) {
-            logger.error(error)
+            logger.error('error resetPassword:', error)
             return res.status(500).render("passwordreset", { error: "Server error" })
         }
     }
@@ -258,7 +266,7 @@ class UserController {
     
             viewsController.renderUsers(req, res)
         } catch (error) {
-            logger.error(error)
+            logger.error('error deleteUser:', error)
             res.status(500).json({ message: 'Server Error' })
         }
     }
